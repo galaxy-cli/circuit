@@ -1,10 +1,10 @@
-# 🏋️ Circuit – Terminal-Based Workout Planner
+# Circuit – Terminal-Based Workout Planner
 
 **Circuit** is a Python shell app for planning, tracking, and progressing your circuit-style workout routines right from the command line. No extra dependencies, just Python's standard library.
 
 ---
 
-## ✅ Features
+## Features
 
 - Interactive terminal shell using Python's `cmd`
 - Manage workout groups: add/edit/delete
@@ -16,7 +16,7 @@
 
 ---
 
-## 🚀 How to Use
+## How to Use
 
 ### 1. Clone this repo
 
@@ -44,7 +44,7 @@ Type `help` or `help <command>` anytime.
 
 ---
 
-## 🧾 Example
+## Example
 
 ```
 > add
@@ -74,7 +74,7 @@ Push Day
 
 ---
 
-## 💾 Files
+## Files
 
 - `circuit.db` – stores all workout data
 - `circuit.log` – your workout history
@@ -82,6 +82,19 @@ Push Day
 
 ---
 
-## 📄 License
+## License
 
-[MIT License](LICENSE)
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+---
+
+## Author & Contact
+
+**galaxy-cli**
+
+GitHub: [https://github.com/galaxy-cli/circuit](https://github.com/galaxy-cli/circuit)
+
+---
+
+Thank you for checking out `circuit`!  
+Happy training!
