@@ -1,6 +1,6 @@
-# Circuit – Terminal-Based Workout Planner
+# circuit
 
-**Circuit** is a Python shell app for planning, tracking, and progressing your circuit-style workout routines right from the command line. No extra dependencies, just Python's standard library.
+**circuit** is a Python shell app for planning, tracking, and progressing your circuit-style workout routines right from the command line. No extra dependencies, just Python's standard library.
 
 ---
 
