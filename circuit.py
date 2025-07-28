@@ -200,8 +200,8 @@ class CircuitShell(cmd.Cmd):
 
 
             print_info("--- PROGRESSIVE OVERLOAD ---")
-            add_reps = input_positive_int("Reps added next workout?: ")
-            add_cycles = input_positive_int("Cycles added next workout?: ")
+            add_reps = input_positive_int("Reps added next workout? (+intensity): ")
+            add_cycles = input_positive_int("Cycles added next workout? (+cardio): ")
             print_info(f"\n{add_reps} reps added to next workout")
             print_info(f"{add_cycles} cycles added to next workout\n")
             c = self.conn.cursor()
@@ -230,7 +230,7 @@ Edit an existing workout group interactively.
     This command allows you to modify the details of a previously created workout group,
     including its name, exercises, schedule, and progressive overload settings. You can specify
     the workout group either by supplying its index number or by editing the currently selected group.
-    
+
     STEPSw:
       1. Selects the group to edit:
          - If no argument is provided, the current selected group (if any) is edited.
@@ -430,7 +430,7 @@ Edit an existing workout group interactively.
         - Displays detailed layout information for the specified group index.
         - Shows the group's name, exercises, number of reps per cycle, and cycles per circuit,
           formatted according to the current exercise display format setting.
-    
+
     EXAMPLES:
       - `index`
           Lists all workout groups with the selected one marked.
