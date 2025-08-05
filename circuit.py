@@ -704,7 +704,6 @@ Edit an existing workout group interactively.
 | (__| | | | (__| |_| | | |_ 
  \___|_|_|  \___|\__,_|_|\__|
                              
-
 '''
             output_buffer.write(header)
 
