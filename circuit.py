@@ -417,10 +417,7 @@ index NUM
     - The selected group becomes the current active group for further commands.
 
 index remove NUM [...]
-index remove NUM [...] now
     - Removes one or more groups by their index numbers.
-    - An interactive confirmation is prompted unless the optional 'now' argument is supplied,
-    which bypasses confirmation and deletes immediately.
     - Multiple index numbers can be specified.
     - If the currently selected group is removed, the selection is cleared.
 
@@ -438,9 +435,6 @@ Selects the third workout group as current.
 
 `index remove 2 4`
 Prompts to confirm removal of groups 2 and 4.
-
-`index remove 1 now`
-Removes group 1 immediately without confirmation.
 
 `index layout 5`
 Displays detailed layout info for the fifth group.
@@ -462,16 +456,12 @@ Displays detailed layout info for the fifth group.
         parts = arg.split()
         cmd = parts[0].lower()
 
+
         if cmd == "remove":
             if len(parts) < 2:
-                print_error("Specify index(es) to remove, e.g. 'index remove 2 3' or 'index remove 1 2 now'.")
+                print_error("Specify index(es) to remove, e.g. 'index remove 2 3'.")
                 return
-            skip_confirm = False
-            if parts[-1].lower() == "now":
-                skip_confirm = True
-                index_parts = parts[1:-1]  # exclude 'remove' and 'now'
-            else:
-                index_parts = parts[1:]  # exclude 'remove'
+            index_parts = parts[1:] 
             try:
                 indexes = [int(i) for i in index_parts]
             except ValueError:
@@ -711,7 +701,7 @@ Show detailed info for the first workout group.
             file_date = datetime.date.today().strftime("%Y-%m-%d")
             filename = f"circuit_schedule[{file_date}].txt"
             try:
-                with open(filename, "w", encoding="utf-8") as f:
+                with open(filename, "w") as f:
                     f.write(output_buffer.getvalue())
                 print_info(f"Exported workout schedule to {filename}")
             except Exception as e:
