@@ -13,7 +13,6 @@ LOG_FILENAME = "circuit.log"
 def prompt_input(prompt_text):
     return input(f"{prompt_text} ")
 
-
 def print_info(msg):
     print(f"{msg}")
 
@@ -34,7 +33,6 @@ def print_no_index_number():
 
 def print_index_does_not_exist():
     print(f"ERROR: No such index exists")
-
 
 class CircuitShell(cmd.Cmd):
 
@@ -114,40 +112,40 @@ class CircuitShell(cmd.Cmd):
     # add
     def do_add(self, arg: str) -> None:
         """
-    Add a new workout group with exercises, schedule, and progressive overload settings.
+Add a new workout group with exercises, schedule, and progressive overload settings.
 
-    This interactive command guides you step-by-step to create a new workout group composed of multiple exercises,
-    specifying how often and when you want to perform them, along with settings to progressively increase workload.
+This interactive command guides you step-by-step to create a new workout group composed of multiple exercises,
+specifying how often and when you want to perform them, along with settings to progressively increase workload.
 
-    STEPS:
-      1. Group Name
-         - Enter the name of your workout group (e.g., "Workout A", "Leg Day").
-         - Allowed characters: letters, digits, spaces, commas, underscores, dashes, and parentheses.
+STEPS:
+1. Group Name
+    - Enter the name of your workout group (e.g., "Workout A", "Leg Day").
+    - Allowed characters: letters, digits, spaces, commas, underscores, dashes, and parentheses.
 
-      2. Exercises
-         - Add one or more exercises belonging to this group, separated by commas.
-         - Each exercise name may contain only letters, spaces, and dashes (e.g., "Push ups", "Leg-Press").
+2. Exercises
+    - Add one or more exercises belonging to this group, separated by commas.
+    - Each exercise name may contain only letters, spaces, and dashes (e.g., "Push ups", "Leg-Press").
 
-      3. Circuits Configuration
-         - Specify how many repetitions of each exercise you will do per cycle ("Rep per cycle").
-         - Specify how many cycles you want per circuit ("Cycles per circuit").
-         - Explanations are provided for "Rep", "Cycle", and "Circuit" to help you understand these terms.
+3. Circuits Configuration
+    - Specify how many repetitions of each exercise you will do per cycle ("Rep per cycle").
+    - Specify how many cycles you want per circuit ("Cycles per circuit").
+    - Explanations are provided for "Rep", "Cycle", and "Circuit" to help you understand these terms.
 
-      4. Schedule
-         - Define the workout days on which this group is scheduled.
-         - Enter days as comma-separated abbreviations (Mon, Tue, Wed, Thu, Fri, Sat, Sun),
-           or enter "N/A" if you do not want to schedule this group.
-         - Input is validated; you will be re-prompted if the input format is incorrect.
+4. Schedule
+    - Define the workout days on which this group is scheduled.
+    - Enter days as comma-separated abbreviations (Mon, Tue, Wed, Thu, Fri, Sat, Sun),
+    or enter "N/A" if you do not want to schedule this group.
+    - Input is validated; you will be re-prompted if the input format is incorrect.
 
-      5. Progressive Overload
-         - Set how many additional reps and cycles to add for the next workout,
-           helping you gradually increase your training intensity.
+5. Progressive Overload
+    - Set how many additional reps and cycles to add for the next workout,
+    helping you gradually increase your training intensity.
 
-    After completing the prompts, the new workout group is saved into the database along with its exercises,
-    and becomes your currently selected group.
+After completing the prompts, the new workout group is saved into the database along with its exercises,
+and becomes your currently selected group.
 
-    USAGE:
-        add
+USAGE:
+    `add`
         """
         if arg.strip() == "":
             print_info("--- WORKOUTS ---")
@@ -227,52 +225,52 @@ class CircuitShell(cmd.Cmd):
         """
 Edit an existing workout group interactively.
 
-    This command allows you to modify the details of a previously created workout group,
-    including its name, exercises, schedule, and progressive overload settings. You can specify
-    the workout group either by supplying its index number or by editing the currently selected group.
+This command allows you to modify the details of a previously created workout group,
+including its name, exercises, schedule, and progressive overload settings. You can specify
+the workout group either by supplying its index number or by editing the currently selected group.
 
-    STEPSw:
-      1. Selects the group to edit:
-         - If no argument is provided, the current selected group (if any) is edited.
-         - If an index number is provided, that group is loaded for editing.
-         - If no group is selected or the index is invalid, appropriate errors are shown.
+STEPS:
+1. Selects the group to edit:
+    - If no argument is provided, the current selected group (if any) is edited.
+    - If an index number is provided, that group is loaded for editing.
+    - If no group is selected or the index is invalid, appropriate errors are shown.
 
-      2. Group Name:
-         - Prompts for a new group name, showing the current value as default.
-         - Pressing Enter keeps the current group name.
-         - The group name must contain only letters, digits, spaces, commas, underscores, dashes, and parentheses.
+2. Group Name:
+    - Prompts for a new group name, showing the current value as default.
+    - Pressing Enter keeps the current group name.
+    - The group name must contain only letters, digits, spaces, commas, underscores, dashes, and parentheses.
 
-      3. Exercises:
-         - Shows the current list of exercises.
-         - Prompts for editing exercises as a comma-separated list.
-         - Can press Enter to keep exercises unchanged.
-         - Each exercise must only contain letters, spaces, and dashes.
+3. Exercises:
+    - Shows the current list of exercises.
+    - Prompts for editing exercises as a comma-separated list.
+    - Can press Enter to keep exercises unchanged.
+    - Each exercise must only contain letters, spaces, and dashes.
 
-      4. Schedule (Workout Days):
-         - Shows the currently scheduled days.
-         - Allows editing with comma-separated values of days ("Mon", "Tue", etc.) or "N/A" for no scheduling.
-         - Pressing Enter keeps the current schedule.
-         - Input is validated; invalid inputs prompt errors.
+4. Schedule (Workout Days):
+    - Shows the currently scheduled days.
+    - Allows editing with comma-separated values of days ("Mon", "Tue", etc.) or "N/A" for no scheduling.
+    - Pressing Enter keeps the current schedule.
+    - Input is validated; invalid inputs prompt errors.
 
-      5. Progressive Overload:
-         - Prompts for edits to:
-           * Reps per cycle
-           * Cycles per circuit
-           * Additional reps for next workout
-           * Additional cycles for next workout
-         - Current values are shown as defaults.
-         - Each value must be a positive integer.
-         - Pressing Enter keeps the existing value.
+5. Progressive Overload:
+    - Prompts for edits to:
+    * Reps per cycle
+    * Cycles per circuit
+    * Additional reps for next workout
+    * Additional cycles for next workout
+    - Current values are shown as defaults.
+    - Each value must be a positive integer.
+    - Pressing Enter keeps the existing value.
 
-      6. After all inputs are collected and validated:
-         - The group record is updated in the database.
-         - The old exercises are deleted and replaced with the new list.
-         - Changes are committed.
-         - Current group selection and prompt updated.
-         - Success or error messages displayed.
+6. After all inputs are collected and validated:
+    - The group record is updated in the database.
+    - The old exercises are deleted and replaced with the new list.
+    - Changes are committed.
+    - Current group selection and prompt updated.
+    - Success or error messages displayed.
 
-    USAGE:
-        `edit`
+USAGE:
+    `edit`
         """
         if arg.strip() == "":
             arg = arg.strip()
@@ -403,49 +401,49 @@ Edit an existing workout group interactively.
     # index
     def do_index(self, arg: str) -> None:
         """
-    Manage and select workout groups by their index number.
+Manage and select workout groups by their index number.
 
-    This command allows you to list all workout groups, select one for editing or viewing,
-    remove groups, or display detailed layout information about a specific group.
+This command allows you to list all workout groups, select one for editing or viewing,
+remove groups, or display detailed layout information about a specific group.
 
-    USAGE:
-      index
-        - Lists all workout groups.
-        - The currently selected group (if any) is marked with an asterisk (*).
+USAGE:
+index
+    - Lists all workout groups.
+    - The currently selected group (if any) is marked with an asterisk (*).
 
-      index NUM
-        - Selects the workout group by its one-based index number.
-        - Only one index number can be specified.
-        - The selected group becomes the current active group for further commands.
+index NUM
+    - Selects the workout group by its one-based index number.
+    - Only one index number can be specified.
+    - The selected group becomes the current active group for further commands.
 
-      index remove NUM [...]
-      index remove NUM [...] now
-        - Removes one or more groups by their index numbers.
-        - An interactive confirmation is prompted unless the optional 'now' argument is supplied,
-          which bypasses confirmation and deletes immediately.
-        - Multiple index numbers can be specified.
-        - If the currently selected group is removed, the selection is cleared.
+index remove NUM [...]
+index remove NUM [...] now
+    - Removes one or more groups by their index numbers.
+    - An interactive confirmation is prompted unless the optional 'now' argument is supplied,
+    which bypasses confirmation and deletes immediately.
+    - Multiple index numbers can be specified.
+    - If the currently selected group is removed, the selection is cleared.
 
-      index layout NUM
-        - Displays detailed layout information for the specified group index.
-        - Shows the group's name, exercises, number of reps per cycle, and cycles per circuit,
-          formatted according to the current exercise display format setting.
+index layout NUM
+    - Displays detailed layout information for the specified group index.
+    - Shows the group's name, exercises, number of reps per cycle, and cycles per circuit,
+    formatted according to the current exercise display format setting.
 
-    EXAMPLES:
-      - `index`
-          Lists all workout groups with the selected one marked.
+EXAMPLES:
+`index`
+Lists all workout groups with the selected one marked.
 
-      - `index 3`
-          Selects the third workout group as current.
+`index 3`
+Selects the third workout group as current.
 
-      - `index remove 2 4`
-          Prompts to confirm removal of groups 2 and 4.
+`index remove 2 4`
+Prompts to confirm removal of groups 2 and 4.
 
-      - `index remove 1 now`
-          Removes group 1 immediately without confirmation.
+`index remove 1 now`
+Removes group 1 immediately without confirmation.
 
-      - `index layout 5`
-          Displays detailed layout info for the fifth group.
+`index layout 5`
+Displays detailed layout info for the fifth group.
         """
         arg = arg.strip()
         c = self.conn.cursor()
@@ -582,70 +580,66 @@ Edit an existing workout group interactively.
     # layout
     def do_layout(self, arg: str) -> None:
         """
-    Layout workouts grouped by day, with customizable display formats and export capabilities.
+Layout workouts grouped by day, with customizable display formats and export capabilities.
 
-    This command displays your weekly workout schedule, organized by the days on which workouts
-    occur. It supports multiple display formats for dates and exercise details, visibility toggles,
-    exporting the layout to a text file, and viewing specific workout groups by index.
+This command displays your weekly workout schedule, organized by the days on which workouts
+occur. It supports multiple display formats for dates and exercise details, visibility toggles,
+exporting the layout to a text file, and viewing specific workout groups by index.
 
-    USAGE:
-      layout
-          - Show the full weekly workout layout using current display settings.
-      
-      layout set date <1-4>
-          - Configure how dates are shown in the weekly layout:
-            1 = Short day name (e.g., "Mon")
-            2 = Full day name (e.g., "Monday")
-            3 = Numeric month/day (e.g., "1/6")
-            4 = Numeric month/day/year (e.g., "1/6/25")
+USAGE:
+    layout
+        - Show the full weekly workout layout using current display settings.
+    
+    layout set date <1-4>
+        - Configure how dates are shown in the weekly layout:
+        1 = Short day name (e.g., "Mon")
+        2 = Full day name (e.g., "Monday")
+        3 = Numeric month/day (e.g., "1/6")
+        4 = Numeric month/day/year (e.g., "1/6/25")
 
-      layout set exercise display <1-4>
-          - Choose how repetitions and cycles are displayed alongside exercises:
-            1 = "16 reps each per cycle" and "6 cycles in circuit" (multi-line detailed)
-            2 = "16 reps" and "6 cycles" (multi-line simplified)
-            3 = "16 reps | 6 cycles" (single line, pipe separated)
-            4 = "16r 6c" (compact single line)
+    layout set exercise display <1-4>
+        - Choose how repetitions and cycles are displayed alongside exercises:
+        1 = "16 reps each per cycle" and "6 cycles in circuit" (multi-line detailed)
+        2 = "16 reps" and "6 cycles" (multi-line simplified)
+        3 = "16 reps | 6 cycles" (single line, pipe separated)
+        4 = "16r 6c" (compact single line)
 
-      layout set group display on|off
-          - Toggle whether the group name appears in the layout output for each workout group.
+    layout set group display on|off
+        - Toggle whether the group name appears in the layout output for each workout group.
 
-      layout export
-          - Export the current weekly layout to a text file named
-            'circuit_schedule[YYYY-MM-DD].txt' in the working directory.
-          - The exported file includes a header banner and respects current display settings.
+    layout export
+        - Export the current weekly layout to a text file named
+        'circuit_schedule[YYYY-MM-DD].txt' in the working directory.
+        - The exported file includes a header banner and respects current display settings.
 
-      layout index NUM
-          - Show detailed information about a single workout group specified by its index number.
-          - This includes the group's exercises and the calculated reps and cycles with display formatting.
+    layout index NUM
+        - Show detailed information about a single workout group specified by its index number.
+        - This includes the group's exercises and the calculated reps and cycles with display formatting.
 
-    EXAMPLES:
-      - `layout`
-          Show your current weekly workout plan.
+EXAMPLES:
+`layout`
+Show your current weekly workout plan.
 
-      - `layout set date 2`
-          Set dates to show full weekday names.
+`layout set date 2`
+Set dates to show full weekday names.
 
-      - `layout set exercise display 3`
-          Show reps and cycles in a compact "16 reps | 6 cycles" format.
+`layout set exercise display 3`
+Show reps and cycles in a compact "16 reps | 6 cycles" format.
 
-      - `layout export`
-          Save the current weekly layout to a timestamped text file.
+`layout export`
+Save the current weekly layout to a timestamped text file.
 
-      - `layout index 1`
-          Show detailed info for the first workout group.
+`layout index 1`
+Show detailed info for the first workout group.
         """
-
         arg = arg.strip()
         if arg == "set":
             print(self.do_layout.__doc__)
             return
-        
-        
         if arg == "":
             self._layout_core()
             return
-        
-        
+
         # layout set
         if arg.startswith("set "):
             parts = arg.split()
@@ -694,7 +688,6 @@ Edit an existing workout group interactively.
                 print_error(f"No '{setting_key}' command in `layout set` command.")
                 return
 
-
         # layout export
         if arg == "export":
             output_buffer = StringIO()
@@ -724,7 +717,6 @@ Edit an existing workout group interactively.
             except Exception as e:
                 print_error(f"Failed to export to file: {e}")
             return
-
 
         # layout index
         if arg.lower().startswith("index "):
@@ -769,10 +761,7 @@ Edit an existing workout group interactively.
                     cycles = group['cycles_per_circuit']
                 print_info(exercise_format(reps, cycles, self.exercise_display_format))
                 return
-
-
         print_error(f"Unknown argument '{arg}' for layout.")
-
 
     def _layout_core(self) -> None:
         """
@@ -846,36 +835,36 @@ Edit an existing workout group interactively.
     # log
     def do_log(self, arg: str) -> None:
         """
-    Manage workout completion logs by adding daily workout layouts and displaying the full log.
+Manage workout completion logs by adding daily workout layouts and displaying the full log.
 
-    This command helps you keep a record of completed workouts by logging the workout layout 
-    for specific dates and reviewing the accumulated workout history.
+This command helps you keep a record of completed workouts by logging the workout layout 
+for specific dates and reviewing the accumulated workout history.
 
-    USAGE:
-      log add
-        - Adds the current workout layout for a specific date to the workout log file.
-        - You will be prompted to enter a date in YYYY-MM-DD format.
-          Press Enter to use today's date by default.
-        - The log entry includes all workouts scheduled for that date,
-          exercises within each workout, reps, and cycle counts adjusted for progressive overload.
-        - If no workouts are scheduled for the specified date, a message is shown and nothing is logged.
-        - Logs are appended to a log file defined by the constant LOG_FILENAME.
+USAGE:
+log add
+- Adds the current workout layout for a specific date to the workout log file.
+- You will be prompted to enter a date in YYYY-MM-DD format.
+    Press Enter to use today's date by default.
+- The log entry includes all workouts scheduled for that date,
+    exercises within each workout, reps, and cycle counts adjusted for progressive overload.
+- If no workouts are scheduled for the specified date, a message is shown and nothing is logged.
+- Logs are appended to a log file defined by the constant LOG_FILENAME.
 
-      log display
-        - Prints the entire workout log from the log file to the console.
-        - If no log file exists or it is empty, an appropriate informational message is shown.
+log display
+- Prints the entire workout log from the log file to the console.
+- If no log file exists or it is empty, an appropriate informational message is shown.
 
-    EXAMPLES:
-      - To add today’s workout layout to the log:
-          > log add
-          (Press Enter when prompted for date)
+EXAMPLES:
+To add today’s workout layout to the log:
+    > log add
+    (Press Enter when prompted for date)
 
-      - To add workout layout for a past date, e.g., July 1, 2025:
-          > log add
-          Enter date to log (YYYY-MM-DD) [default: today]: 2025-07-01
+To add workout layout for a past date, e.g., July 1, 2025:
+    > log add
+    Enter date to log (YYYY-MM-DD) [default: today]: 2025-07-01
 
-      - To display the entire workout log:
-          > log display
+To display the entire workout log:
+    > log display
 
         """
         
