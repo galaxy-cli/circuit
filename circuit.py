@@ -5,7 +5,6 @@ import datetime
 import os
 from io import StringIO
 
-
 DB_FILENAME = "circuit.db"
 LOG_FILENAME = "circuit.log"
 
@@ -857,85 +856,61 @@ To display the entire workout log:
     > log display
 
         """
-        
-        
         arg = arg.strip().lower()
-        
-    
-        if arg == "add":
-            input_date_str = input("Enter date to log (YYYY-MM-DD) [default: today]: ").strip()
-            if not input_date_str:
-                log_date = datetime.date.today()
-            else:
-                try:
-                    log_date = datetime.datetime.strptime(input_date_str, "%Y-%m-%d").date()
-                except ValueError:
-                    print_error("Invalid date format. Please enter YYYY-MM-DD.")
-                    return
-            log_day_name = log_date.strftime("%a")  # e.g. "Mon", "Tue"
-            valid_days_order = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-            
-            
-            if log_day_name not in valid_days_order:
-                print_error(f"Invalid day name derived from date: {log_day_name}")
+        c = self.conn.cursor()
+
+        if arg.startswith("add"):
+            parts = arg.split(maxsplit=1)
+            if len(parts) != 2:
+                print_error("Usage: log add INDEX[,INDEX,...]")
                 return
-            c = self.conn.cursor()
+            index_str = parts[1]
+            try:
+                indexes = [int(x.strip()) for x in index_str.split(",")]
+            except ValueError:
+                print_error("Indexes must be valid integers separated by commas.")
+                return
+
             c.execute("SELECT * FROM groups ORDER BY id")
             groups = c.fetchall()
-            
-            
             if not groups:
                 print_info("No workout groups available.")
                 return
-            
-            
-            def get_occurrence_index(group_days, day):
-                days_list = [d.strip() for d in group_days.split(",") if d.strip()]
-                occ_idx = 0
-                for idx, d in enumerate(days_list, 1):
-                    if d == day:
-                        occ_idx = idx
-                        break
-                return occ_idx if occ_idx > 0 else 1  # fallback 1 if not found
-            
-            
+
+            for idx in indexes:
+                if idx < 1 or idx > len(groups):
+                    print_error(f"Index {idx} does not exist.")
+                    return
+
+            selected_groups = [groups[i - 1] for i in indexes]
+            group_names = [g["name"] for g in selected_groups]
+
             log_lines = []
-            log_lines.append(f"Workout Log for {log_date.strftime('%m/%d/%y')} ({log_day_name}):")
-            any_workouts = False
-            
-            
-            for group in groups:
-                days_list = [d.strip() for d in group['days'].split(",")]
-                if log_day_name not in days_list:
-                    continue  # skip groups not scheduled this day
-                occ_idx = get_occurrence_index(group['days'], log_day_name)
-                reps = group['reps_per_cycle'] + (group['add_reps'] * occ_idx)
-                cycles = group['cycles_per_circuit'] + (group['add_cycles'] * occ_idx)
-                c.execute("SELECT name FROM exercises WHERE group_id = ? ORDER BY id", (group['id'],))
-                exercises = [row['name'] for row in c.fetchall()]
+            log_lines.append(f"Workout Log {datetime.date.today().strftime('%m/%d/%Y')}: {', '.join(group_names)}")
+
+            for group in selected_groups:
+                group_id = group["id"]
+                group_name = group["name"]
+                c.execute("SELECT name FROM exercises WHERE group_id = ? ORDER BY id", (group_id,))
+                exercises = [row["name"] for row in c.fetchall()]
                 if not exercises:
+                    print_info(f"No exercises found for group '{group_name}'. Nothing added.")
                     continue
-                any_workouts = True
-                log_lines.append(f"\n{group['name']}:")
-                for idx, ex in enumerate(exercises, 1):
-                    log_lines.append(f"{idx}. {ex}")
-                log_lines.append(f"{reps} reps")
-                log_lines.append(f"{cycles} cycles")
-            
-            
-            if not any_workouts:
-                print_info(f"No workouts scheduled for {log_date.strftime('%A')} ({log_day_name}), nothing added.")
-                return
-            log_lines.append("-" * 40)
-            
-            
+
+                reps = group["reps_per_cycle"] + group["add_reps"] * 0  # just base occurrence
+                cycles = group["cycles_per_circuit"] + group["add_cycles"] * 0
+
+                for i, ex in enumerate(exercises, 1):
+                    log_lines.append(f"{i}. {ex}")
+                log_lines.append(f"{reps} reps | {cycles} cycles")
+                log_lines.append("")
+
             try:
                 with open(LOG_FILENAME, "a", encoding="utf-8") as f:
                     f.write("\n".join(log_lines) + "\n")
-                print_info(f"Workout layout for {log_date.strftime('%m/%d/%y')} added to log.")
+                print_info(f"Workout layouts for groups '{', '.join(group_names)}' added to log.")
             except Exception as e:
                 print_error(f"Failed to write to log: {e}")
-
 
         elif arg == "display":
             if not os.path.exists(LOG_FILENAME):
@@ -952,9 +927,8 @@ To display the entire workout log:
             except Exception as e:
                 print_error(f"Failed to read log: {e}")
 
-
         else:
-            print_error("Use `log add` or `log display`.")
+            print_error("Use `log add INDEX` or `log display`.")
 
 
     # cmd
@@ -977,6 +951,7 @@ To display the entire workout log:
                 print(name)
         else:
             print_error("`cmd` takes no arguments")
+
 
     # help
     def do_help(self, arg: str) -> None:
