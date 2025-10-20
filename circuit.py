@@ -839,7 +839,7 @@ log add
 - If no workouts are scheduled for the specified date, a message is shown and nothing is logged.
 - Logs are appended to a log file defined by the constant LOG_FILENAME.
 
-log display
+log layout
 - Prints the entire workout log from the log file to the console.
 - If no log file exists or it is empty, an appropriate informational message is shown.
 
@@ -853,7 +853,7 @@ To add workout layout for a past date, e.g., July 1, 2025:
     Enter date to log (YYYY-MM-DD) [default: today]: 2025-07-01
 
 To display the entire workout log:
-    > log display
+    > log layout
 
         """
         arg = arg.strip().lower()
@@ -912,7 +912,7 @@ To display the entire workout log:
             except Exception as e:
                 print_error(f"Failed to write to log: {e}")
 
-        elif arg == "display":
+        elif arg == "layout":
             if not os.path.exists(LOG_FILENAME):
                 print_info("No workout log found yet.")
                 return
@@ -928,7 +928,7 @@ To display the entire workout log:
                 print_error(f"Failed to read log: {e}")
 
         else:
-            print_error("Use `log add INDEX` or `log display`.")
+            print_error("Use `log add INDEX` or `log layout`.")
 
 
     # cmd
