@@ -21,6 +21,9 @@ def print_usage(msg):
 def print_error(msg):
     print(f"ERROR: {msg}")
 
+def print_title(title):
+    print(f'--- {title} ---'.upper())
+
 def print_EOF():
     print(f"\n\nEnter `exit` to close shell\n")
 
@@ -127,9 +130,8 @@ This interactive command guides you step-by-step to create a new workout group c
 specifying how often and when you want to perform them, along with settings to progressively increase workload.
         """
         if arg.strip() == "":
-            # add ---> workout
-            print_info("--- WORKOUTS ---")
-            
+            print_title('workouts')
+
             while True:
                 group_name = prompt_input("Group name (ex. Workout A, Leg Day): ").strip()
                 
@@ -152,8 +154,8 @@ specifying how often and when you want to perform them, along with settings to p
             print_info(f"{', '.join(exercises)} added to {group_name}\n")
 
 
-            # add ---> circuits
-            print_info("--- CIRCUITS ---")
+
+            print_title('circuits')
             
             print_info("Rep = Repetition of an exercise\nCycle = A single completion of a circuit\nCircuit = Sequentially progressing through a number of exercises\n")
             
@@ -165,9 +167,8 @@ specifying how often and when you want to perform them, along with settings to p
             print_info(f"{cycles_per_circuit} cycles in circuit\n")
 
 
-            # add ---> schedule
-            print_info("--- SCHEDULE ---")
-            
+
+            print_title('schedule')
             valid_days_set = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "N/A"}
             
             while True:
@@ -186,9 +187,9 @@ specifying how often and when you want to perform them, along with settings to p
             print_info(f"\nScheduled {', '.join(days_list) if days_list else 'No scheduled days (N/A)'}\n")
 
 
-            # add --> progressive overload
-            print_info("--- PROGRESSIVE OVERLOAD ---")
-            
+
+            print_title('progressive overload')
+
             # ---> add_weight = self.input_weight("Weight added next workout? (+weight)")
             add_reps = self.input_positive_int("Reps added next workout? (+intensity): ")
             add_cycles = self.input_positive_int("Cycles added next workout? (+cardio): ")
@@ -198,7 +199,8 @@ specifying how often and when you want to perform them, along with settings to p
             print_info(f"{add_cycles} cycles added to next workout\n")
             
             c = self.conn.cursor()
-            
+
+
 
             try:
                 c.execute("""
@@ -286,9 +288,9 @@ the workout group either by supplying its index number or by editing the current
             exercises = [row["name"] for row in c.fetchall()]
 
 
-            # edit ---> workout
-            print_info("--- WORKOUTS ---")
-            
+
+            print_title('workouts')
+
             while True:
                 new_group_name = prompt_input(f"New group name [{group_data['name']}]: ").strip()
                 
@@ -318,9 +320,9 @@ the workout group either by supplying its index number or by editing the current
                 print_error("Each exercise must contain only letters, spaces, and dashes (e.g. 'Push ups', 'Leg-Press'). Please try again.")
 
 
-            # edit ---> schedule
-            print_info("--- SCHEDULE ---")
-            
+
+            print_title('schedule')
+
             valid_days_set = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "N/A"}
             previous_days_str = group_data['days'] or ""
             
@@ -350,9 +352,9 @@ the workout group either by supplying its index number or by editing the current
             print_info(f"\nScheduled {', '.join(days_list) if days_list else 'No scheduled days (N/A)'}\n")
 
 
-            # edit ---> progressive overload
-            print_info("--- PROGRESSIVE OVERLOAD ---")
-            
+
+            print_title('progressive overload')
+
             # ---> new_weight_per_cycle = self.
             new_reps_per_cycle = self.prompt_positive_int("Edit reps per cycle", group_data['reps_per_cycle'])
             new_cycles_per_circuit = self.prompt_positive_int("Edit cycles per circuit", group_data['cycles_per_circuit'])
@@ -362,6 +364,7 @@ the workout group either by supplying its index number or by editing the current
 
             print_info(f"\n{add_reps} reps saved for next workout")
             print_info(f"{add_cycles} cycles saved for next workout\n")
+
 
 
             try:
@@ -404,7 +407,9 @@ USAGE
         c = self.conn.cursor()
         c.execute("SELECT id, name FROM groups ORDER BY id")
         groups = c.fetchall()
-        
+
+
+        # index
         if not groups:
             print_info("No workout groups available.")
             return
@@ -538,6 +543,7 @@ USAGE
             print_info(f"Selected workout group {idx}. {group['name']}")
 
 
+
     ### layout ###
     def do_layout(self, arg: str) -> None:
         """
@@ -561,6 +567,7 @@ USAGE
             self._layout_core()
             return
 
+
         # layout | set
         if arg.startswith("set "):
             parts = arg.split()
@@ -569,8 +576,9 @@ USAGE
                     print_usage("layout set date <1-4>")
                     return
             setting_key = parts[1].lower()
-            
-            # layout | set date
+
+
+            # layout | set | date
             if setting_key == "date":
                 if len(parts) == 3 and parts[2].isdigit():
                     num = int(parts[2])
@@ -580,8 +588,9 @@ USAGE
                     else:
                         print_usage("Choose 1-4.")
                     return
-            
-            # layout | set group
+
+
+            # layout | set | group
             elif setting_key == "group":
                 if len(parts) == 3:
                     val = parts[2].lower()
@@ -599,7 +608,8 @@ USAGE
                 return
 
         
-        # layout | set unit
+        # layout | set | unit
+
 
         # layout | export
         if arg == "export":
@@ -639,59 +649,7 @@ USAGE
             return
 
 
-        # layout | index
-        if arg.lower().startswith("index "):
-            parts = arg.split()
-            if len(parts) == 2 and parts[1].isdigit():
-                idx = int(parts[1])
-                c = self.conn.cursor()
-                c.execute("SELECT * FROM groups ORDER BY id")
-                groups = c.fetchall()
-                
-                if not groups:
-                    print_info("No workout groups available.")
-                    return
-                
-                if idx < 1 or idx > len(groups):
-                    print_error(f"Index {idx} does not exist.")
-                    return
-                
-                group = groups[idx - 1]
-                
-                c.execute("SELECT name FROM exercises WHERE group_id = ? ORDER BY id", (group['id'],))
-                exercises = [row['name'] for row in c.fetchall()]
-                
-                print_info(f"{idx}. {group['name']}")
-                
-                for i, ex in enumerate(exercises, 1):
-                    print_info(f"{i}. {ex}")
-                
-                scheduled_days = [d.strip() for d in (group['days'] or "").split(",") if d.strip()]
-                
-                if scheduled_days:
-                    occ_idx = 1
-                    reps = group['reps_per_cycle'] + (group['add_reps'] * occ_idx)
-                    cycles = group['cycles_per_circuit'] + (group['add_cycles'] * occ_idx)
-                else:
-                    reps = group['reps_per_cycle']
-                    cycles = group['cycles_per_circuit']
-                
-                print_info(f'{reps} | {cycles}')
-                return
-        
-        print_error(f"Unknown argument '{arg}' for layout.")
-
-
-    ### layout core logic
     def _layout_core(self) -> None:
-        """
-        Internal helper that performs the actual layout printing.
-        Uses self.date_display_format and self.group_display_enabled.
-        Calls print_info to output text.
-
-        Prints workouts grouped by actual upcoming dates in order,
-        not just fixed weekday order, for date formats 3 and 4.
-        """
         c = self.conn.cursor()
         c.execute("SELECT * FROM groups ORDER BY id")
         groups = c.fetchall()
@@ -715,19 +673,25 @@ USAGE
         
         for date_obj, day_name in dates_and_weekdays:
             workouts = day_workouts.get(day_name, []) 
+            
             if not workouts:
                 continue
+            
             if self.date_display_format == 1:
-                day_display = day_name
+                day_display = day_name            
+            
             elif self.date_display_format == 2:
                 day_display = date_obj.strftime("%A")
+            
             elif self.date_display_format == 3:
                 day_display = f"{date_obj.month}/{date_obj.day}"
+            
             elif self.date_display_format == 4:
                 try:
                     day_display = date_obj.strftime("%-m/%-d/%y")
                 except Exception:
                     day_display = f"{date_obj.month}/{date_obj.day}/{str(date_obj.year)[2:]}"
+            
             else:
                 day_display = day_name
             
@@ -746,6 +710,7 @@ USAGE
                     print_info(f"{idx}. {ex}")
                 
                 print_info(f'{reps} reps | {cycles} cycles\n')
+
 
 
     ### log ###
@@ -803,7 +768,7 @@ USAGE
                     print_info(f"No exercises found for group '{group_name}'. Nothing added.")
                     continue
 
-                reps = group["reps_per_cycle"] + group["add_reps"] * 0  # just base occurrence
+                reps = group["reps_per_cycle"] + group["add_reps"] * 0
                 cycles = group["cycles_per_circuit"] + group["add_cycles"] * 0
 
                 for i, ex in enumerate(exercises, 1):
@@ -845,6 +810,7 @@ USAGE
             print_error("Use `log add INDEX` or `log layout`.")
 
 
+
     ### cmd ###
     def do_cmd(self, arg: str) -> None:
         """
@@ -864,6 +830,7 @@ USAGE
                 print(name)
         else:
             print_error("`cmd` takes no arguments")
+
 
 
     ### help ###
@@ -890,6 +857,7 @@ USAGE
                 print(f"{cmd_name.ljust(10)} {desc}")
 
 
+
     ### exit ###
     def do_exit(self, arg: str) -> bool:
         """
@@ -898,12 +866,13 @@ USAGE
         print("Goodbye!")
         self.conn.close()
         return True
-    
 
-    ### exit ###
+
     def do_EOF(self, arg: str) -> bool:
         print_EOF()
         return False
+
+
 
 ############ Run ############
 if __name__ == "__main__":
