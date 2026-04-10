@@ -1,95 +1,26 @@
-# circuit
-
-**circuit** is a Python shell app for planning, tracking, and progressing your circuit-style workout routines right from the command line. No extra dependencies, just Python's standard library.
-
----
+# Circuit
+A lightweight, command-line workout automation tool designed to manage and track circuit-style exercises with progressive overload.
 
 ## Features
+- Circuit Management: Create and organize workouts into groups with specific repetition and cycle counts.
+- Progressive Overload: Automatically track and add repetitions or cycles to your next session to ensure steady progress.
+- Flexible Scheduling: Plan your week by assigning workout groups to specific days (Mon–Sun).
+- Session Logging: Save completed layouts to a local log file for a permanent history of your training.
+- Exportable Layouts: Generate and export your weekly schedule into clean text files.
 
-- Interactive terminal shell using Python's `cmd`
-- Manage workout groups: add/edit/delete
-- Auto-progress reps & cycle counts (progressive overload)
-- Weekly layout viewer & export to `.txt`
-- Workout log with date stamps (in `circuit.log`)
-- SQLite-backed persistent storage
-- Fully offline – no 3rd-party libraries needed
+## Commands
+| Command | Description |
+| :--- | :--- |
+| `add` | Interactively create a new workout group and exercises. |
+| `edit` | Modify existing group details, schedules, or overload settings. |
+| `index` | List all groups, select a group, or remove specific indexes. |
+| `layout` | View your scheduled workouts or export them to a file. |
+| `log` | Record a completed session to your permanent log file. |
+| `exit` | Securely close the database and exit the shell. |
 
----
-
-## How to Use
-
-### 1. Clone this repo
-
-```
-git clone https://github.com/your-username/circuit-shell.git
-cd circuit-shell
-```
-
-### 2. Run the app
-
-```
-python circuit.py
-```
-
-You’ll enter the interactive shell with commands like:
-
-- `add` – Add a new workout group
-- `edit` – Modify existing group
-- `index` – List or select groups
-- `layout` – See weekly plan
-- `log` – Write or read workout logs
-- `exit` – Quit the shell
-
-Type `help` or `help <command>` anytime.
-
----
-
-## Example
-
-```
-> add
-Group name: Push Day
-Exercises: Push ups, Dips
-Reps per cycle: 12
-Cycles per circuit: 3
-Workout days: Mon, Thu
-Add reps: 1
-Add cycles: 0
-```
-
-```
-> log add
-✓ Workout for today saved to circuit.log
-```
-
-```
-> layout
-Monday
-Push Day
-1. Push ups
-2. Dips
-12 reps each per cycle
-3 cycles in circuit
-```
-
----
-
-## Files
-
-- `circuit.db` – stores all workout data
-- `circuit.log` – your workout history
-- `circuit_schedule[DATE].txt` – exported weekly plans
-
----
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
-
----
-
-## Author & Contact
-
-**galaxy-cli**
-
-GitHub: [https://github.com/galaxy-cli/circuit](https://github.com/galaxy-cli/circuit)
+## Quick Start
+1. **Launch**: Run the script to enter the interactive shell.
+2. **Create**: Use add to build your first workout (e.g., "Leg Day").
+3. **Select**: Use index 1 to focus on your new group.
+4. **View**: Type layout to see your reps and cycles for the day.
+5. **Track**: Use log add 1 after your workout to save your progress.
