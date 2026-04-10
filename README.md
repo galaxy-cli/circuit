@@ -1,4 +1,4 @@
-# Circuit
+# circuit
 A lightweight, command-line workout automation tool designed to manage and track circuit-style exercises with progressive overload.
 
 ## Features
