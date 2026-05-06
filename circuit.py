@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import cmd
 import sqlite3
 import datetime
@@ -7,9 +8,6 @@ import re
 DB_FILENAME = "circuit.db"
 LOG_FILENAME = "circuit.log"
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 ############ UI ############
 def prompt_input(prompt_text):
     return input(f"{prompt_text} ")
@@ -35,9 +33,7 @@ def print_no_index_number():
 def print_index_does_not_exist():
     print(f"ERROR: No such index exists")
 
-=======
->>>>>>> 597bb2c (Full rewrite circuit.py README.md)
->>>>>>> temp-work
+
 class CircuitShell(cmd.Cmd):
     intro = "Welcome to Circuit - The exercise automation tool\nUse `cmd` or `help` for commands and `exit` to close.\n"
     shell_name = "Circuit"
@@ -51,21 +47,15 @@ class CircuitShell(cmd.Cmd):
         
         self.current_group_id = None
         self.update_prompt()
-<<<<<<< HEAD
 
         self.date_display_format = 1        # Default format for layouts
         self.group_display_enabled = True 
-=======
-<<<<<<< HEAD
+
         self.date_display_format = 1        # DEFAULT: `layout set date` 
         self.group_display_enabled = True   # DEFAULT: `layout set group`
-=======
 
         self.date_display_format = 1        # Default format for layouts
         self.group_display_enabled = True 
->>>>>>> 597bb2c (Full rewrite circuit.py README.md)
->>>>>>> temp-work
-
 
     def _init_db(self):
         """Initializes tables using a single executescript call."""
@@ -80,13 +70,8 @@ class CircuitShell(cmd.Cmd):
                 name TEXT NOT NULL, FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE
             );
         """)
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
+
         self.conn.commit()
-=======
->>>>>>> 597bb2c (Full rewrite circuit.py README.md)
->>>>>>> temp-work
 
     def update_prompt(self):
         """Standardizes prompt updates with direct execution."""
@@ -96,7 +81,6 @@ class CircuitShell(cmd.Cmd):
             name = row["name"] if row else ""
         self.prompt = f"({self.shell_name}) [{name}] "
 
-<<<<<<< HEAD
     def precmd(self, line):
         self.update_prompt()
         return line
@@ -186,8 +170,6 @@ class CircuitShell(cmd.Cmd):
         ex_raw = self.prompt_valid(f"Exercises [{current_ex}]", r"[A-Za-z\s\-,\s]+", current_ex)
         exercises = [e.strip() for e in ex_raw.split(",") if e.strip()]
 
-=======
-<<<<<<< HEAD
     def precmd(self, line: str) -> str:
         self.update_prompt()
         return line
@@ -220,8 +202,6 @@ class CircuitShell(cmd.Cmd):
                     return num
             
             print_error("Please enter a valid positive integer.")
-
-    # ---> def input_weight()
 
     ############ Commands ############
     ### add ###
@@ -389,7 +369,7 @@ the workout group either by supplying its index number or by editing the current
             
             c.execute("SELECT name FROM exercises WHERE group_id = ? ORDER BY id", (group_id,))
             exercises = [row["name"] for row in c.fetchall()]
-=======
+
     def precmd(self, line):
         self.update_prompt()
         return line
@@ -478,56 +458,48 @@ the workout group either by supplying its index number or by editing the current
         
         ex_raw = self.prompt_valid(f"Exercises [{current_ex}]", r"[A-Za-z\s\-,\s]+", current_ex)
         exercises = [e.strip() for e in ex_raw.split(",") if e.strip()]
->>>>>>> 597bb2c (Full rewrite circuit.py README.md)
 
->>>>>>> temp-work
         reps = self.get_int("Reps per cycle", g['reps_per_cycle'])
         cycles = self.get_int("Cycles per circuit", g['cycles_per_circuit'])
         
         days_input = input(f"Days [{g['days']}]: ").title() or g['days']
         days = ",".join(re.findall(r"Mon|Tue|Wed|Thu|Fri|Sat|Sun", days_input))
-<<<<<<< HEAD
 
         add_r = self.get_int("Add reps", g['add_reps'])
         add_c = self.get_int("Add cycles", g['add_cycles'])
-=======
 
-<<<<<<< HEAD
+        print_title('workouts')
 
-            print_title('workouts')
-
-            while True:
-                new_group_name = prompt_input(f"New group name [{group_data['name']}]: ").strip()
-                
-                if not new_group_name:
-                    new_group_name = group_data['name']
-                    break
-                
-                if re.fullmatch(r"[A-Za-z0-9,_\-\s\(\)]+", new_group_name):
-                    break
-                
-                print_error("Group name must contain only letters, digits, commas, underscores, dashes, spaces, and parentheses.")
+        while True:
+            new_group_name = prompt_input(f"New group name [{group_data['name']}]: ").strip()
             
-            while True:
-                exercises_prompt = f"Edit exercises (use `,` to separate) [{', '.join(exercises)}]: "
-                new_exercises_input = prompt_input(exercises_prompt).strip()
-                
-                if not new_exercises_input:
-                    new_exercises = exercises
-                    break
-                
-                new_exercises = [e.strip() for e in new_exercises_input.split(",") if e.strip()]
-                valid_exercise_pattern = re.compile(r"^[A-Za-z\s\-]+$")
-                
-                if new_exercises and all(valid_exercise_pattern.fullmatch(ex) for ex in new_exercises):
-                    break
-                
-                print_error("Each exercise must contain only letters, spaces, and dashes (e.g. 'Push ups', 'Leg-Press'). Please try again.")
-=======
+            if not new_group_name:
+                new_group_name = group_data['name']
+                break
+            
+            if re.fullmatch(r"[A-Za-z0-9,_\-\s\(\)]+", new_group_name):
+                break
+            
+            print_error("Group name must contain only letters, digits, commas, underscores, dashes, spaces, and parentheses.")
+        
+        while True:
+            exercises_prompt = f"Edit exercises (use `,` to separate) [{', '.join(exercises)}]: "
+            new_exercises_input = prompt_input(exercises_prompt).strip()
+            
+            if not new_exercises_input:
+                new_exercises = exercises
+                break
+            
+            new_exercises = [e.strip() for e in new_exercises_input.split(",") if e.strip()]
+            valid_exercise_pattern = re.compile(r"^[A-Za-z\s\-]+$")
+            
+            if new_exercises and all(valid_exercise_pattern.fullmatch(ex) for ex in new_exercises):
+                break
+            
+            print_error("Each exercise must contain only letters, spaces, and dashes (e.g. 'Push ups', 'Leg-Press'). Please try again.")
+        
         add_r = self.get_int("Add reps", g['add_reps'])
         add_c = self.get_int("Add cycles", g['add_cycles'])
->>>>>>> 597bb2c (Full rewrite circuit.py README.md)
->>>>>>> temp-work
 
         # 4. Save changes
         try:
@@ -541,14 +513,10 @@ the workout group either by supplying its index number or by editing the current
             print(f"✓ Updated {name}")
         except sqlite3.IntegrityError:
             print("ERROR: Name already exists.")
-<<<<<<< HEAD
 
     # --- INDEX ---
     def do_index(self, arg):
         """Usage: index [NUM | remove NUMs | layout NUM]"""
-=======
-
-<<<<<<< HEAD
 
             print_title('schedule')
 
@@ -652,12 +620,10 @@ USAGE
             print_groups()
             return
         
-=======
     # --- INDEX ---
     def do_index(self, arg):
         """Usage: index [NUM | remove NUMs | layout NUM]"""
->>>>>>> 597bb2c (Full rewrite circuit.py README.md)
->>>>>>> temp-work
+
         parts = arg.split()
         groups = self.conn.execute("SELECT id, name FROM groups ORDER BY id").fetchall()
         
@@ -671,7 +637,6 @@ USAGE
             return
 
         cmd = parts[0].lower()
-<<<<<<< HEAD
         
         # Helper to resolve index strings to database IDs
         def get_id(idx_str):
@@ -751,9 +716,6 @@ USAGE
 
         date_fmts = {1: "%a", 2: "%A", 3: "%m/%d", 4: "%m/%d/%y"}
         fmt = date_fmts.get(self.date_display_format, "%a")
-
-=======
-<<<<<<< HEAD
 
 
         # index | remove
@@ -936,10 +898,6 @@ USAGE
                 print_error(f"No '{setting_key}' command in `layout set` command.")
                 return
 
-        
-        # layout | set | unit
-
-
         # layout | export
         if arg == "export":
             output_buffer = StringIO()
@@ -1039,7 +997,6 @@ USAGE
                     print_info(f"{idx}. {ex}")
                 
                 print_info(f'{reps} reps | {cycles} cycles\n')
-=======
         
         # Helper to resolve index strings to database IDs
         def get_id(idx_str):
@@ -1116,29 +1073,24 @@ USAGE
         groups = self.conn.execute("SELECT * FROM groups").fetchall()
         if self.current_group_id:
             groups = [g for g in groups if g['id'] == self.current_group_id]
->>>>>>> 597bb2c (Full rewrite circuit.py README.md)
-
         date_fmts = {1: "%a", 2: "%A", 3: "%m/%d", 4: "%m/%d/%y"}
         fmt = date_fmts.get(self.date_display_format, "%a")
-
-<<<<<<< HEAD
 
     ### log ###
     def do_log(self, arg: str) -> None:
         """
 Manage workout completion logs by adding daily workout layouts and displaying the full log.
-=======
->>>>>>> temp-work
+
+USAGE
+    log add [index NUM] 
+    log layout
+        """
         for i in range(7):
             date_obj = datetime.date.today() + datetime.timedelta(days=i)
             day_name = date_obj.strftime("%a")
             
             active = [g for g in groups if self.current_group_id or day_name in g['days']]
             if not active: continue
-<<<<<<< HEAD
-=======
->>>>>>> 597bb2c (Full rewrite circuit.py README.md)
->>>>>>> temp-work
 
             out(f"\n{date_obj.strftime(fmt)}")
             for group in active:
@@ -1148,13 +1100,6 @@ Manage workout completion logs by adding daily workout layouts and displaying th
                     out(f"  {idx}. {ex['name']}")
                 out(f"  {group['reps_per_cycle']} reps | {group['cycles_per_circuit']} cycles")
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-USAGE
-    log add [index NUM] 
-    log layout
-        """
         arg = arg.strip().lower()
         c = self.conn.cursor()
 
@@ -1165,8 +1110,7 @@ USAGE
                 print_error("Usage: log add INDEX[,INDEX,...]")
                 return
             index_str = parts[1]
-=======
->>>>>>> temp-work
+
         if file_handle:
             file_handle.close()
             print(f"✓ Exported to {fname}")
@@ -1186,10 +1130,7 @@ USAGE
         # 2. log add
         if parts[0] == "add" and len(parts) > 1:
             groups = self.conn.execute("SELECT * FROM groups ORDER BY id").fetchall()
-<<<<<<< HEAD
-=======
->>>>>>> 597bb2c (Full rewrite circuit.py README.md)
->>>>>>> temp-work
+
             try:
                 # Parse "1,2,3" or "1 2 3" into database rows
                 indices = [int(i.strip()) for i in parts[1].replace(',', ' ').split()]
@@ -1206,10 +1147,7 @@ USAGE
             
             print(f"✓ Logged: {', '.join(g['name'] for g in selected)} to circuit.log")
 
-<<<<<<< HEAD
     # --- CMD ---
-=======
-<<<<<<< HEAD
             for idx in indexes:
                 if idx < 1 or idx > len(groups):
                     print_error(f"Index {idx} does not exist.")
@@ -1275,10 +1213,7 @@ USAGE
 
 
     ### cmd ###
-=======
     # --- CMD ---
->>>>>>> 597bb2c (Full rewrite circuit.py README.md)
->>>>>>> temp-work
     def do_cmd(self, arg: str) -> None:
         """
     Lists all available commands
@@ -1298,12 +1233,9 @@ USAGE
         else:
             print_error("`cmd` takes no arguments")
 
-<<<<<<< HEAD
     # --- HELP ---
     def do_help(self, arg):
         """List available commands and their descriptions."""
-=======
-<<<<<<< HEAD
 
 
     ### help ###
@@ -1319,12 +1251,10 @@ USAGE
             "log": "Add/layout logs for exercise"
         }
         
-=======
+
     # --- HELP ---
     def do_help(self, arg):
         """List available commands and their descriptions."""
->>>>>>> 597bb2c (Full rewrite circuit.py README.md)
->>>>>>> temp-work
         if arg:
             func = getattr(self, f"do_{arg}", None)
             if func: print(func.__doc__.strip())
@@ -1342,7 +1272,6 @@ USAGE
                     summary = doc.strip().split('\n')[0] if doc else "No description"
                     print(f"{cmd_name.ljust(10)} - {summary}")
             print()
-<<<<<<< HEAD
 
     # --- EXIT ---
     def do_exit(self, arg):
@@ -1352,10 +1281,6 @@ USAGE
 
 # --- EXECUTE 
 if __name__ == "__main__":
-=======
-
-<<<<<<< HEAD
-
 
     ### exit ###
     def do_exit(self, arg: str) -> bool:
@@ -1382,7 +1307,7 @@ if __name__ == "__main__":
             break
         except KeyboardInterrupt:
             print_EOF()
-=======
+
     # --- EXIT ---
     def do_exit(self, arg):
         """Exit the shell."""
@@ -1391,14 +1316,9 @@ if __name__ == "__main__":
 
 # --- EXECUTE 
 if __name__ == "__main__":
->>>>>>> temp-work
     app = CircuitShell()
     try:
         app.cmdloop()
     except KeyboardInterrupt:
-<<<<<<< HEAD
         app.do_exit(None)
-=======
         app.do_exit(None)
->>>>>>> 597bb2c (Full rewrite circuit.py README.md)
->>>>>>> temp-work
